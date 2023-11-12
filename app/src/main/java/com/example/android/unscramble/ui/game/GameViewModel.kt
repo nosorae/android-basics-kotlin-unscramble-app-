@@ -38,16 +38,14 @@ import kotlinx.coroutines.flow.stateIn
 class GameViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _score = SaveableMutableStateFlow(
-        savedStateHandle = savedStateHandle,
+    private val _score = savedStateHandle.getMutableStateFlow(
         key = "score",
         initialValue = 0
     )
     val score: StateFlow<Int>
         get() = _score.asStateFlow()
 
-    private val _highScore = SaveableMutableStateFlow(
-        savedStateHandle = savedStateHandle,
+    private val _highScore = savedStateHandle.getMutableStateFlow(
         key = "highScore",
         initialValue = 0
     )
@@ -55,16 +53,14 @@ class GameViewModel(
         get() = _highScore.asStateFlow()
 
 
-    private val _currentWordCount = SaveableMutableStateFlow(
-        savedStateHandle = savedStateHandle,
+    private val _currentWordCount = savedStateHandle.getMutableStateFlow(
         key = "currentWordCount",
         initialValue = 0
     )
     val currentWordCount: StateFlow<Int>
         get() = _currentWordCount.asStateFlow()
 
-    private val _currentScrambledWord = SaveableMutableStateFlow(
-        savedStateHandle = savedStateHandle,
+    private val _currentScrambledWord = savedStateHandle.getMutableStateFlow(
         key = "currentScrambledWord",
         initialValue = ""
     )
