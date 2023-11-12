@@ -16,10 +16,12 @@
 
 package com.example.android.unscramble.ui.game
 
+import android.app.Application
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TtsSpan
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -31,13 +33,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel containing the app data and methods to process the data
  */
 class GameViewModel(
-    private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+    application: Application,
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: GameRepository = GameRepository(application = application)
+) : AndroidViewModel(application) {
     private val _score = savedStateHandle.getMutableStateFlow(
         key = "score",
         initialValue = 0
@@ -50,7 +55,11 @@ class GameViewModel(
         initialValue = 0
     )
     val highScore: StateFlow<Int>
-        get() = _highScore.asStateFlow()
+        get() = repository.highScore.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = 0
+        )
 
 
     private val _currentWordCount = savedStateHandle.getMutableStateFlow(
@@ -144,6 +153,10 @@ class GameViewModel(
     */
     private fun increaseScore() {
         _score.value = _score.value.plus(SCORE_INCREASE)
+
+        viewModelScope.launch {
+            repository.updateScore(score =_score.value)
+        }
     }
 
     /*
