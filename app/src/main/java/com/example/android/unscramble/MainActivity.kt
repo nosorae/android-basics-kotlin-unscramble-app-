@@ -18,13 +18,17 @@ package com.example.android.unscramble
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.android.unscramble.di.GameComponent
+import javax.inject.Inject
 
 /**
  * Creates an Activity that hosts the Game fragment in the app
  */
 class MainActivity : AppCompatActivity() {
+    lateinit var gameComponent: GameComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as GameApplication).appComponent.inject(this) // 메모:: 액티비티에서 @Inject문 사용 가능해짐, 이 액티비티에서 주입되는 다른 클래스들도 역시 자동으로 인젝션의 대상이 되게 됨
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
     }

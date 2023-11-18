@@ -17,6 +17,7 @@
 package com.example.android.unscramble.ui.game
 
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.android.unscramble.MainActivity
 import com.example.android.unscramble.R
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -44,6 +46,11 @@ class GameFragment : Fragment() {
             application = requireContext().applicationContext as Application,
             owner = this
         )
+    }
+
+    override fun onAttach(context: Context) {
+        (requireActivity() as MainActivity).gameComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
