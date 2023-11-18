@@ -8,8 +8,6 @@ class GameRepository(
     application: Application,
     private val dataSource: GameDataSource = GameDataSource(application)
 ) {
-
-
     val highScore: Flow<Int> = dataSource.gamePreferencesFlow.map { preferences ->
         preferences.highScore
     }

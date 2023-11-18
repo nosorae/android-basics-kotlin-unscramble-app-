@@ -1,4 +1,4 @@
-package com.example.android.unscramble.ui.game.data
+package com.example.android.unscramble.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.intPreferencesKey

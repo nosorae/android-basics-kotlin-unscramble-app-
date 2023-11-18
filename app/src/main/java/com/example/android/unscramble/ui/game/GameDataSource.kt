@@ -2,9 +2,9 @@ package com.example.android.unscramble.ui.game
 
 import android.app.Application
 import androidx.datastore.preferences.core.edit
-import com.example.android.unscramble.ui.game.data.GamePreferences
-import com.example.android.unscramble.ui.game.data.PreferenceKeys
-import com.example.android.unscramble.ui.game.data.gameDataStore
+import com.example.android.unscramble.data.GamePreferences
+import com.example.android.unscramble.data.PreferenceKeys
+import com.example.android.unscramble.data.gameDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
