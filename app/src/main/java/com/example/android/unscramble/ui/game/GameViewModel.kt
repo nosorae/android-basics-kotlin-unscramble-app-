@@ -33,18 +33,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel containing the app data and methods to process the data
  */
-class GameViewModel(
-    private val savedStateHandle: SavedStateHandle,
+class GameViewModel @AssistedInject constructor(
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val repository: GameRepository
 ) : ViewModel() {
     private val _score = savedStateHandle.getMutableStateFlow(
@@ -189,30 +192,4 @@ class GameViewModel(
     }
 
     fun isGameOver() = isGameOver
-}
-
-
-class GameViewModelFactory(
-    private val application: Application,
-    owner: SavedStateRegistryOwner,
-    defaultArgs: Bundle? = null
-) : AbstractSavedStateViewModelFactory(
-    owner,
-    defaultArgs
-) {
-    override fun <T : ViewModel> create(
-        key: String,
-        modelClass: Class<T>,
-        handle: SavedStateHandle
-    ): T {
-        require(modelClass.isAssignableFrom(GameViewModel::class.java)) {
-            "Unkown ViewModel class"
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        return GameViewModel(
-            savedStateHandle = handle,
-            repository = GameRepository(application = application)
-        ) as T
-    }
 }
