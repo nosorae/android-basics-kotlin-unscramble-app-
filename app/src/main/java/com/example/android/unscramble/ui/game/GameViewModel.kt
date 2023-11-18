@@ -33,8 +33,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -46,8 +45,9 @@ import javax.inject.Inject
 /**
  * ViewModel containing the app data and methods to process the data
  */
-class GameViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val repository: GameRepository
 ) : ViewModel() {
     private val _score = savedStateHandle.getMutableStateFlow(
